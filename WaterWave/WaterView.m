@@ -20,7 +20,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         //设置默认值
-        _growRate = 0.5;
+        _growRate = 0.6;
         _amplitude = 10;
         _verSurfaceY = self.frame.size.height / 2;
         _period = self.frame.size.width / 2;
@@ -54,24 +54,28 @@
 }
 
 - (void) drawRect:(CGRect)rect {
-
-    UIColor * color = [UIColor colorWithRed:86 / 255.0f green:202 / 255.0f blue:139 / 255.0f alpha:1];
-    [color set];
     
     CGContextClearRect(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
     
+    UIBezierPath * pathTwo = [self getWaterLine:_amplitude periodWidth:_period * 1.8 initPhase:_initPhaseTwo verSurfaceY:_verSurfaceY];
+    [pathTwo fillWithBlendMode:kCGBlendModeMultiply alpha:1];
+
     UIBezierPath * pathOne = [self getWaterLine:_amplitude periodWidth:_period * 1.2 initPhase:_initPhase verSurfaceY:_verSurfaceY];
     [pathOne fillWithBlendMode:kCGBlendModeMultiply alpha:1];
-    
-    UIBezierPath * pathTwo = [self getWaterLine:_amplitude periodWidth:_period * 1.5 initPhase:_initPhaseTwo verSurfaceY:_verSurfaceY];
-    [pathTwo fillWithBlendMode:kCGBlendModeMultiply alpha:1];
 }
 
 - (UIBezierPath *) getWaterLine:(CGFloat) amplitude periodWidth:(CGFloat) period initPhase:(CGFloat) initPhase verSurfaceY:(CGFloat) surfaceY{
 //    用正余弦函数模拟水面,正余弦函数方程为：
 //    y = Asin(wx + b) + h ，这个公式里：w影响周期，A影响振幅，h影响y位置，b为初相；
-    UIColor * colorSecond = [UIColor colorWithRed:86 / 255.0f green:202 / 255.0f blue:139 / 255.0f alpha:1];
-    [colorSecond set];
+    
+    if (initPhase == _initPhase) {
+        UIColor * colorSecond = [UIColor colorWithRed:86 / 255.0f green:202 / 255.0f blue:139 / 255.0f alpha:1];
+        [colorSecond set];
+    } else {
+        UIColor * color = [UIColor colorWithRed:43 / 255.0f green:133 / 255.0f blue:1 alpha:1];
+        [color set];
+    }
+    
     
     UIBezierPath * path = [UIBezierPath bezierPath];
     
